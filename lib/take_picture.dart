@@ -5,7 +5,7 @@ import 'package:path/path.dart' as path;
 
 class TakePicture extends StatefulWidget {
     final CameraDescription camera;
-    TakePicture({ required this.camera });
+    const TakePicture({ required this.camera });
 
     @override
     _TakePictureState createState() => _TakePictureState();
@@ -74,10 +74,12 @@ class TakePicture extends StatefulWidget {
 
       // Store the picture at the given location
       final fullPath = path.join(dir.path, name);
-      await _controller.takePicture(fullPath);
+      final img = await _controller.takePicture();
+
+      img.saveTo(fullPath);
 
       // ignore: use_build_context_synchronously
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text("Picture taken!"),
             duration: const Duration(milliseconds: 600),
